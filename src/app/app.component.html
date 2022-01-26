@@ -1,109 +1,176 @@
 <div class="container">
-
-<div class="numbersContainer">
-
-  <div class="row">
- 
-      <div (click)="selectNumber(item)" *ngfor= "let item of chooseBalls" class ="circle">
-            {{item}} 
-     </div>
-
-</div>
-
-<button class="clearButton"  > Clear selection </button>
-
-</div>
-
-<div class="betContainer">
-
-<div class="row">
-      <div *ngfor= "let item of preSelectBalls" class ="circle circle--grey">
-        {{item}} 
-       
+<div class="mainBox">
+  <div class="numbersContainer">
+    <div class="row">
+      <div [ngStyle]="{'background': getRandomColor()}"  (click)="selectNumber(i+1)" [ngClass]="selectedNumber === 0 || i === selectedNumber -1 ? 'circle' : 'circle circle--grey'" *ngFor="let item of chooseBalls; index as i" >
+       <span> {{item}}</span>
       </div>
- 
+    </div>
+    <button class="clearButton"  (click)="clearSelection()"  > Clear selection</button>
   </div>
-
-<div class="bet">
-  <div class="multiplier">1,5X</div>
-  <input class="value" type="text">
-  <button class="buttonOk">OK</button>
+  <div class="betContainer">
+    <div class="row">
+      <div *ngFor="let item of selectedNumbersArr" class="circle circle--grey">
+        <span> {{!item ? "" : item }}</span>
+      </div>
+    </div>
+    <div class="bet">
+      <div class="multiplier">1,5X</div>
+      <input type="number" (change)="setBet($event)"/> 
+     
+      <button class="buttonOk">OK</button>
+    </div>
+    <div class="total">Total: {{account}}</div>
+    <button [attr.disabled]="buttonDisabled" class="betButton" (click)="randomNumber()">Place bet</button>
+  </div>
 </div>
-
-<div class="total"></div>
-<button class="betButton"></button>
-
-
+<div class="result">
+  <div class="resultContainer">
+    <span>Result</span>
+    <div class="circle red">
+      <span>{{random ? random : ''}}</span>
+    </div>
+    <span></span>
+  </div>
+  
+</div>
+<div [ngClass]="messageClass">
+  <span>{{message}}</span>
+</div>
 </div>
 
 
 <style lang="scss">
+.message {
+  width:300px;
+  height: 100px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  background-color: #0093E9;
+background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+  position: absolute;
+  top:30px;
+  right:20px;
+  font-size: 20px;
+  font-weight: 700;
+  color:white;
+  opacity: 1;
+}
+
+.hidden {
+  opacity:0;
+  transition: 2s linear all;
+}
+.resultContainer {
+  margin: 70px auto;
+  width:fit-content;
+}
+
+.container {
+  width: 1100px;
+  margin: auto; 
+
+}
+.result {
+
+  border: 1px solid grey;
+  width:100%;
+height: 200px;
+margin: 0 auto;
+
+}
 
 
 .total, .betButton {
   width:100%;
-  height:50px;
-  background: blueviolet;
-
+  height:38px;
+  background:#64b5f6;
+text-align: center;
+color:white;
+border:none; 
 
 }
+.betButton[disabled]{
+  background:grey;
+  cursor:initial;
+}
 
+.betButton {
+  cursor:pointer;
+}
 .total {
   margin-top:155px;
-  background-color: #e5e5e5;
+  background-color: #aca7a7;
+  
 }
 
 .bet {
   display:flex;
   width: 80%;
   margin:0 10%;
+  
 }
 
 .multiplier, .buttonOk {
-/*   width:40px;
-  height: 40px; */
 background: grey;[]
 padding: 10px 15px;
+color:white;
 
 }
 
 .buttonOk {
   color:white; 
-  background-color: blue;
+  background-color:#64b5f6;
   border:none; 
   margin-left: 15px;
 }
 
-  .container {
+  .mainBox {
     display: flex;
+    height: 100%;
+    width:100%;
   }
+  
 .circle  {
   border-radius: 50%;
   width: 35px;
   height: 35px;
-  padding: 10px;
   background: #fff;
   border: 0.5px solid rgb(180, 180, 180);
   color: #000;
-  text-align: center;
   font: 15px Arial, sans-serif;
   margin-right: 10px;  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
 
+}
+
+
+.red {
+  background-color: red;
+  color:white; 
+  font-weight: 900;
+  font-size: large;
 }
 
 .circle--grey {
-  background: rgb(240, 240, 240);
+  background: rgb(240, 240, 240) !important;
+  cursor:default;
 }
 
 .numbersContainer {
-width:600px;
+width:60%;
 height: 500px;
 border: 1px solid grey;
 }
 
 
 .betContainer {
-  width:500px;
+  width:40%;
 height: 500px;
 border: 1px solid grey;
 }
@@ -117,7 +184,7 @@ border: 1px solid grey;
 
 
 .clearButton {
-  color:blue; 
+  color:#64b5f6; 
   background: white;
   border:0;
   width:100%;
