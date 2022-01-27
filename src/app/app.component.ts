@@ -8,8 +8,6 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./app.component.sass']
 })
 
-
-
 export class AppComponent implements OnInit{
   
   chooseBalls=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -22,12 +20,8 @@ export class AppComponent implements OnInit{
   message="";
   messageClass="message hidden"
 
- 
-
-
   ngOnInit(): void {
 
-  
   }
 
   randomNumber() {
@@ -35,26 +29,21 @@ export class AppComponent implements OnInit{
     const win = this.random === this.selectedNumber;
     this.account=win ? this.account +this.myBet*1.5 : this.account - this.myBet; 
     this.showMessage(win ? "Congratulations you won!" : "Sorry, try again!")
-    this.selectedNumber=0;
-    
+    this.selectedNumber=0; 
   }  
 
-
-
-selectNumber(userChoiseNumber:number) { 
+  selectNumber(userChoiseNumber:number) { 
   if (!this.selectedNumber) {
     this.selectedNumber = userChoiseNumber;
     this.selectedNumbersArr[this.selectedNumbersArr.indexOf(0)] = userChoiseNumber; 
   } 
- 
 }
 
-clearSelection() {
+  clearSelection() {
   this.selectedNumber = 0; 
   this.selectedNumbersArr[this.selectedNumbersArr.indexOf(0)-1]=0;
 }
-
-  
+ 
    getRandomColor=() => {
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -64,28 +53,22 @@ clearSelection() {
     return color;
   }
 
-
 setBet(event: any){
-  console.log(event.target.value);
-  
   if (event.target.value*1 < 5 ) {
     this.showMessage ("Minimum bet is 5 €");
   } else {
     this.buttonDisabled=null;
     this.myBet=event.target.value*1;
   }
-  
 }
-
 
 showMessage(msg:string) {
   this.message=msg;
   this.messageClass="message";
   setTimeout(()=> {
-this.messageClass="message hidden"
+  this.messageClass="message hidden"
   }, 2000 )
 }
-
 }
 
 
